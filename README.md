@@ -14,7 +14,16 @@
 
 ## Table of Contents
 
-[TOC]
+- [Vision Statement](#vision-statement)
+- [Requirements](#requirements)
+    - [Step #1: Identify Categories of Users](#step-1-identify-categories-of-users)
+    - [Step #2: Create Actor-Goal List](#step-2-create-actor-goal-list)
+    - [Step #3: Identify User Stories](#step-3-identify-user-stories)
+    - [Step #4: Write Use Cases](#vision-statement)
+- [Iteration #1](#iteration-1)
+- [Design](#design)
+- [Coding Standards](#coding-standards)
+- [Project Summary and Retrospective](#project-summary-and-retrospective)
 
 ***
 
