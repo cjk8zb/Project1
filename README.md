@@ -95,13 +95,18 @@ For the tech-savvy introvert who would rather have a text conversation than inte
 
 |Story ID|Task|Estimated Hours|Actual Hours|
 |:-:|---|---|---|
-|S1|Design UI|5||
-||Develop model|8||
+|S1|Design UI|5|7|
+||Develop model|8|5|
 ||Implement network layer|16||
 |S2|Design message listener|8||
 |S4|Implement send/receive/repeat message model|16||
 ||Use network topology to find fastest path between participants|16||
 
+### Retrospective
+
+Instead of focusing on the networking, time was spent on implementing the UI layer. Also, Instead of designing UI mockups ahead of time design happened at the same time as implementation. This approach added some extra time because of the waisted time implementing UI elements that were later removed, but with my unfamiliarity with front-end Android code it helped guard against designing unimplementable elements.
+
+I might need to retcon the story, since the Story Plan doesn't accurately represent the time spent during this iteration. Also, the velocity is currently 0.
 
 ## Design
 
