@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         String peerName = sharedPref.getString(PEER_NAME, null);
-        if (peerName != null) {
+        if (false && peerName != null) {
             createSession(peerName);
         } else {
             showProfile();
