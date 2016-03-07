@@ -30,20 +30,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:hint="Enter Message" />
+            android:hint="@string/enter_message" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:id="@+id/button_send"
+                style="@style/Widget.AppCompat.ActionButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="false"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
                 android:layout_alignParentStart="false"
-                android:text="Send" />
+                android:contentDescription="@string/send"
+                android:src="@drawable/ic_send"
+                android:text="@string/send"
+                android:tint="@color/colorAccent" />
         </RelativeLayout>
 
     </LinearLayout>

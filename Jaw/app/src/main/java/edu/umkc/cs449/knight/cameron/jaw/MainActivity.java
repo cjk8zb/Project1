@@ -2,24 +2,19 @@ package edu.umkc.cs449.knight.cameron.jaw;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ImageButton;
 
 import edu.umkc.cs449.knight.cameron.jaw.model.Message;
 import edu.umkc.cs449.knight.cameron.jaw.model.Peer;
@@ -32,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
     private RecyclerView mMessageRecyclerView;
     private MessageAdapter mMessageAdapter;
-    private Button mSendButton;
+    private ImageButton mSendButton;
     private EditText mMessageEditText;
     private Session mSession;
 
@@ -42,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         setContentView(R.layout.activity_main);
 
         mMessageEditText = (EditText) findViewById(R.id.activity_main_message_edit_text);
-        mSendButton = (Button) findViewById(R.id.button_send);
+        mSendButton = (ImageButton) findViewById(R.id.button_send);
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +93,10 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
-            applyMenuColor(actionBar.getThemedContext(), menu);
+            for (int i = 0; i < menu.size(); ++i) {
+                MenuItem menuItem = menu.getItem(i);
+                DrawableUtil.applyTint(actionBar.getThemedContext(), menuItem.getIcon(), android.R.attr.textColorPrimary);
+            }
         }
 
         return true;
@@ -123,36 +121,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         return super.onOptionsItemSelected(item);
     }
 
-    private void applyMenuColor(Context context, Menu menu) {
-        if (context == null || menu == null) {
-            return;
-        }
-
-        final TypedValue typedValue = new TypedValue();
-        if (!context.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)) {
-            return;
-        }
-        Integer textColorId = typedValue.resourceId;
-
-        for (int i = 0; i < menu.size(); ++i) {
-            MenuItem menuItem = menu.getItem(i);
-            Drawable drawable = menuItem.getIcon();
-            if (drawable == null) {
-                continue;
-            }
-
-            drawable = DrawableCompat.wrap(drawable);
-            drawable.mutate();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                DrawableCompat.setTint(drawable, getResources().getColor(textColorId, null));
-            } else {
-                //noinspection deprecation
-                DrawableCompat.setTint(drawable, getResources().getColor(textColorId));
-            }
-            menuItem.setIcon(drawable);
-        }
-    }
-
     @Override
     public void onFinishEditProfile(String name) {
         if (name != null) {
@@ -162,83 +130,12 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         }
     }
 
-    private abstract class MessageHolder extends RecyclerView.ViewHolder {
-        public MessageHolder(View itemView) {
-            super(itemView);
-        }
-
-        public abstract void bindMessage(Message message);
-    }
-
-    private class SentMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
-
-        public SentMessageHolder(View itemView) {
-            super(itemView);
-            mMessageTextView = (TextView) itemView.findViewById(R.id.sent_message_list_item_message_text_view);
-        }
-
-        @Override
-        public void bindMessage(Message message) {
-            mMessageTextView.setText(message.getText());
-        }
-    }
-
-    private class ReceivedMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
-        private TextView mPeerTextView;
-
-        public ReceivedMessageHolder(View itemView) {
-            super(itemView);
-            mMessageTextView = (TextView) itemView.findViewById(R.id.received_message_list_item_message_text_view);
-            mPeerTextView = (TextView) itemView.findViewById(R.id.received_message_list_item_peer_text_view);
-        }
-
-        @Override
-        public void bindMessage(Message message) {
-            mMessageTextView.setText(message.getText());
-            mPeerTextView.setText(message.getPeer().getName());
-        }
-    }
-
-    private class SystemMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
-
-        public SystemMessageHolder(View itemView) {
-            super(itemView);
-            mMessageTextView = (TextView) itemView.findViewById(R.id.system_message_list_item_message_text_view);
-        }
-
-        @Override
-        public void bindMessage(Message message) {
-            mMessageTextView.setText(message.getText());
-        }
-
-
-    }
-
     private class MessageAdapter extends RecyclerView.Adapter<MessageHolder> {
 
         @Override
         public MessageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = getLayoutInflater();
-            switch (Message.Type.values()[viewType]) {
-                case SENT: {
-                    View view = layoutInflater.inflate(R.layout.sent_message_list_item, parent, false);
-                    return new SentMessageHolder(view);
-                }
-                case RECEIVED: {
-                    View view = layoutInflater.inflate(R.layout.received_message_list_item, parent, false);
-                    return new ReceivedMessageHolder(view);
-                }
-                case SYSTEM: {
-                    View view = layoutInflater.inflate(R.layout.system_message_list_item, parent, false);
-                    return new SystemMessageHolder(view);
-                }
-                default:
-            }
-
-            return null;
+            return MessageHolder.getInstance(layoutInflater, parent, Message.Type.values()[viewType]);
         }
 
         @Override

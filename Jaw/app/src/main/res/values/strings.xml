@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Jaw</string>
     <string name="title_activity_main">Messages</string>
+    <string name="send">Send</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="profile">Profile</string>
+    <string name="debug">Debug</string>
+    <string name="name">Name</string>
 </resources>
