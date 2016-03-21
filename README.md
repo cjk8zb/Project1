@@ -1,4 +1,4 @@
-# Peer to Peer to Peer Proximity Based Group Messaging
+# Peer to Peer to Peer Proximity Based Group Messaging (Jaw app)
 ## Cameron Knight
 ### UMKC CS449
 
@@ -21,6 +21,7 @@
     - [Step #3: Identify User Stories](#step-3-identify-user-stories)
     - [Step #4: Write Use Cases](#vision-statement)
 - [Iteration #1](#iteration-1)
+- [Iteration #1](#iteration-2)
 - [Design](#design)
 - [Coding Standards](#coding-standards)
 - [Project Summary and Retrospective](#project-summary-and-retrospective)
@@ -29,7 +30,7 @@
 
 ## Vision Statement
 
-For the tech-savvy introvert who would rather have a text conversation than interact with a human in the real word **This App** bridges the gap. **This App** allows you to talk to anyone at a party, without all the social awkwardness (like eye contact). Unlike conventional messaging apps, **This App** only works with other **This App** users in your immediate proximity.
+For the tech-savvy introvert who would rather have a text conversation than interact with a human in the real word **Jaw** bridges the gap. **Jaw** allows you to talk to anyone at a party, without all the social awkwardness (like eye contact). Unlike conventional messaging apps, **Jaw** only works with other **Jaw** users in your immediate proximity.
 
 ## Requirements
 
@@ -49,12 +50,25 @@ For the tech-savvy introvert who would rather have a text conversation than inte
 
 ### Step #3: Identify User Stories
 
-|Story ID|Story|Story Points|Priority|Status|
-|:-:|---|:-:|:-:|--:|
-|S1|Participant can send a message to all other participants|5|1||
-|S2|Participants will receive messages from all other participants|3|2||
-|S3|As a participant, I would like to send direct messages to specific participants|3|5||
-|S4|The proximity space should increase as more participants join|10|3||
+|Story ID|Story                                                                                |Story Points|Priority|Status|
+|:------:|-------------------------------------------------------------------------------------|:----------:|:------:|-----:|
+|      S1|Participants will choose usernames to identify themselves.                           |           5|       1|      |
+|      S2|Participants can also be identified by an avatar image.                              |           4|       2|      |
+|      S3|Participant can enter a message.                                                     |           3|       3|      |
+|      S4|Message should be sent to all other participants.                                    |           6|       4|      |
+|      S5|Participant can see a history of past messages.                                      |           3|       5|      |
+|      S6|Participant can see system messages.                                                 |           2|       6|      |
+|      S7|System messages will show when participants join the conversation.                   |           2|       7|      |
+|      S8|System messages should show when participants leave the conversation.                |           2|       8|      |
+|      S9|Participants will receive messages from all other participants.                      |           4|       9|      |
+|     S10|App will use Central to listen for advertisement from Peripherals.                   |           8|      10|      |
+|     S11|App running on compatible devices will use Peripheral to advertise to other devices. |           7|      11|      |
+|     S12|Central devices will connect to a Peripheral device to send and receive messages.    |          13|      12|      |
+|     S13|A Peripheral device will connect to multiple Central devices.                        |           3|      13|      |
+|     S14|A Peripheral device will send participant list to Central devices.                   |          15|      14|      |
+|     S15|A Peripheral device will relay messages to Central devices.                          |          16|      15|      |
+|     S16|As a participant, I would like to send direct messages to specific participants.     |           3|      16|      |
+|     S17|The proximity space should increase as more participants join.                       |          18|      17|      |
 
 ### Step #4: Write Use Cases
 
@@ -102,11 +116,21 @@ For the tech-savvy introvert who would rather have a text conversation than inte
 |S4|Implement send/receive/repeat message model|16||
 ||Use network topology to find fastest path between participants|16||
 
+### Review Meeting
+
+- UI was demoed to the client.
+- Client didn't like the color scheme (it should be brighter).
+- Generally the UI was well received.
+
 ### Retrospective
 
 Instead of focusing on the networking, time was spent on implementing the UI layer. Also, Instead of designing UI mockups ahead of time design happened at the same time as implementation. This approach added some extra time because of the waisted time implementing UI elements that were later removed, but with my unfamiliarity with front-end Android code it helped guard against designing unimplementable elements.
 
-I might need to retcon the story, since the Story Plan doesn't accurately represent the time spent during this iteration. Also, the velocity is currently 0.
+I might need to retcon the story, since the Story Plan doesn't accurately represent the time spent during this iteration.
+
+Project Velocity: 0
+
+## Iteration #2
 
 ## Design
 

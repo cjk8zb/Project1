@@ -45,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
                 if (text.length() > 0) {
                     mSession.sendText(text);
                     mMessageEditText.setText(null);
-                    mMessageAdapter.notifyDataSetChanged();
-                    scrollToHead();
                 }
             }
         });
@@ -70,8 +68,14 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     }
 
     private void createSession(String peerName) {
-        mSession = new Session(new Peer(peerName));
         mMessageAdapter = new MessageAdapter();
+        mSession = new Session(new Peer(peerName), new Session.SessionListener() {
+            @Override
+            public void onMessagesUpdated(Message lastMessage) {
+                mMessageAdapter.notifyDataSetChanged();
+                scrollToHead();
+            }
+        });
         mMessageRecyclerView.setAdapter(mMessageAdapter);
         mSession.join();
     }
@@ -108,15 +112,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             case R.id.action_profile:
                 showProfile();
                 return true;
-            case R.id.action_debug: {
-                if (mSession == null) {
-                    return false;
-                }
-                mSession.seedRandomData();
-                mMessageAdapter.notifyDataSetChanged();
-                scrollToHead();
-                return true;
-            }
         }
         return super.onOptionsItemSelected(item);
     }

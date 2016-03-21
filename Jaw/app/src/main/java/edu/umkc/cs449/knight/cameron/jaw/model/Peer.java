@@ -9,11 +9,6 @@ public class Peer {
     private String mName;
     private UUID mUUID;
 
-    // FIXME: Remove after networking is implemented
-    public Peer() {
-        this(NameGenerator.generateName());
-    }
-
     public Peer(String name) {
         mName = name;
         mUUID = UUID.randomUUID();
