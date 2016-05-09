@@ -4,51 +4,65 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import edu.umkc.cs449.knight.cameron.jaw.ChatProvider;
-import edu.umkc.cs449.knight.cameron.jaw.RandomChat;
-
+import static edu.umkc.cs449.knight.cameron.jaw.AppSettings.*;
 /**
  * Created by camjknight on 2/20/16.
  */
 public class Session implements ChatProvider.ChatListener {
     private static final String TAG = "Session";
-    private ChatProvider mProvider;
+    private final ChatProvider mProvider;
 
-    private List<Message> mMessages;
-    private List<Peer> mConnectedPeers;
+    private final List<Message> mMessages;
+    private final Message.Builder mSendMessageBuilder = new Message.Builder(Message.Type.SENT);
+    private final Message.Builder mSystemMessageBuilder = new Message.Builder(Message.Type.SYSTEM);
+    private final Message.Builder mReceiveMessageBuilder = new Message.Builder(Message.Type.RECEIVED);
     private Peer mCurrentPeer;
 
     public interface SessionListener {
-        public void onMessagesUpdated(Message lastMessage);
+        void onMessagesUpdated();
     }
-    private SessionListener mSessionListener;
+    private final SessionListener mSessionListener;
+
+    public Session(Peer currentPeer, SessionListener listener, ChatProvider provider) {
+        mCurrentPeer = currentPeer;
+        mMessages = new ArrayList<>();
+        mSessionListener = listener;
+        if (provider == null) {
+            mProvider = ChatProviders.SOCKET.getInstance(this);
+        }
+        else {
+            mProvider = provider;
+        }
+    }
 
     public Session(Peer currentPeer, SessionListener listener) {
-        mCurrentPeer = currentPeer;
-        mMessages = new ArrayList<Message>();
-        mConnectedPeers = new ArrayList<Peer>();
-        mProvider = new RandomChat(this);
-        mSessionListener = listener;
+        this(currentPeer, listener, null);
     }
 
     public void join() {
         mProvider.connect(mCurrentPeer);
     }
 
-    public void sendText(String text) {
-        Message message = new Message(Message.Type.SENT, text, mCurrentPeer);
-        addMessage(message);
+    public void disconnect() {
+        mProvider.disconnect();
+    }
+
+    public void sendText(String text) throws Exception {
         mProvider.sendText(text);
+        Message message = mSendMessageBuilder.text(text).peer(mCurrentPeer).build();
+        addMessage(message);
     }
 
     public List<Message> getMessages() {
         return mMessages;
     }
 
-    public List<Peer> getConnectedPeers() {
-        return mConnectedPeers;
+    public void setCurrentPeer(Peer peer) {
+        disconnect();
+        mCurrentPeer = peer;
+        join();
     }
 
     public Peer getCurrentPeer() {
@@ -58,38 +72,41 @@ public class Session implements ChatProvider.ChatListener {
     private void addMessage(Message message) {
         mMessages.add(message);
         if (mSessionListener != null) {
-            mSessionListener.onMessagesUpdated(message);
+            mSessionListener.onMessagesUpdated();
         }
     }
 
     @Override
     public void onConnect(boolean success) {
-        if (success) {
-            addMessage(new Message("You have joined the conversation."));
-        } else {
-            addMessage(new Message("Unable to join the conversation."));
-        }
+        Log.d(TAG, "Connected: " + success);
+        String text = success ? "You have joined the conversation." : "Unable to join the conversation.";
+        Message message = mSystemMessageBuilder.text(text).build();
+        addMessage(message);
     }
 
     @Override
     public void onDisconnect() {
-        addMessage(new Message("You have left the conversation."));
+        Message message = mSystemMessageBuilder.text("You have left the conversation.").build();
+        addMessage(message);
     }
 
     @Override
     public void onReceivedText(String text, Peer fromPeer) {
-        addMessage(new Message(Message.Type.RECEIVED, text, fromPeer));
+        Message message = mReceiveMessageBuilder.text(text).peer(fromPeer).build();
+        addMessage(message);
     }
 
     @Override
     public void onPeerAdded(Peer peer) {
-        mConnectedPeers.add(peer);
-        addMessage(new Message(peer.getName() + " has joined the conversation."));
+        String text = peer.getName() + " has joined the conversation.";
+        Message message = mSystemMessageBuilder.text(text).build();
+        addMessage(message);
     }
 
     @Override
     public void onPeerRemoved(Peer peer) {
-        mConnectedPeers.remove(peer);
-        addMessage(new Message(peer.getName() + " has left the conversation."));
+        String text = peer.getName() + " has left the conversation.";
+        Message message = mSystemMessageBuilder.text(text).build();
+        addMessage(message);
     }
 }

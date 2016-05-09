@@ -1,4 +1,4 @@
-package edu.umkc.cs449.knight.cameron.jaw.model;
+package edu.umkc.cs449.knight.cameron.jaw.random;
 // Source: https://gist.github.com/DHuckaby/3980166
 /*
  * Copyright (C) 2011 The Android Open Source Project
@@ -27,6 +27,7 @@ import java.util.Random;
  * composing sentences. Any resemblance to actual events (or, actually, any
  * resemblance to anything that makes sense) is merely coincidental!
  */
+@SuppressWarnings("ALL")
 public class NonsenseGenerator {
 
     private static NonsenseGenerator sInstance;
@@ -96,7 +97,7 @@ public class NonsenseGenerator {
     public String makeText(int numSentences) {
         StringBuilder sb = new StringBuilder();
         while (numSentences-- > 0) {
-            sb.append(makeSentence(false) + ".");
+            sb.append(makeSentence(false)).append(".");
             if (numSentences > 0) {
                 sb.append(" ");
             }

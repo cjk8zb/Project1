@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="left|start"
+    android:gravity="start"
     android:orientation="horizontal"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp">
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:baselineAligned="false">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -39,7 +40,7 @@
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/received_message_list_item_peer_text_view"
+            android:layout_alignStart="@id/received_message_list_item_peer_text_view"
             android:layout_below="@id/received_message_list_item_peer_text_view"
             tools:text="Step 1. Create app.\nStep 2. ???\nStep 3. Profit" />
 

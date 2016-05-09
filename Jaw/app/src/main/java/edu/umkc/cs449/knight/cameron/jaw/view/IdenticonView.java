@@ -21,15 +21,12 @@ public class IdenticonView extends View {
 
     private byte[] mHash;
     private Paint mPaint;
-    private Path mClippingPath = new Path();
+    private final Path mClippingPath = new Path();
     private int mCellHeight;
     private int mCellWidth;
     private int mTop;
     private int mLeft;
 
-    private
-    @ColorInt
-    int mBackgroundColor = 0xFFEEEEEE;
     private
     @ColorInt
     int mForegroundColor;
@@ -49,11 +46,12 @@ public class IdenticonView extends View {
             text = "";
         }
 
-        MessageDigest messageDigest = null;
+        MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
+            return;
         }
 
         setHash(messageDigest.digest(text.getBytes()));
@@ -82,26 +80,26 @@ public class IdenticonView extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
 
         float scale = 1f / 12f;
-        mLeft = (int) (w * scale);
-        mTop = (int) (h * scale);
+        mLeft = (int) (width * scale);
+        mTop = (int) (height * scale);
 
         mClippingPath.reset();
-        float s = 1f / 8f;
-        int l = (int) (w * s);
-        int t = (int) (h * s);
-        RectF rect = new RectF(l, t, w - l, h - t);
+        float rectScale = 1f / 8f;
+        int rectLeft = (int) (width * rectScale);
+        int rectTop = (int) (height * rectScale);
+        RectF rect = new RectF(rectLeft, rectTop, width - rectLeft, height - rectTop);
         mClippingPath.addRoundRect(rect, mLeft, mTop, Path.Direction.CCW);
         mClippingPath.close();
 
-        int width = w - 2 * mLeft;
-        int height = h - 2 * mTop;
+        int newWidth = width - 2 * mLeft;
+        int newHeight = height - 2 * mTop;
 
-        mCellHeight = height / 5;
-        mCellWidth = width / 5;
+        mCellHeight = newWidth / 5;
+        mCellWidth = newHeight / 5;
     }
 
     @Override
@@ -109,7 +107,8 @@ public class IdenticonView extends View {
         super.onDraw(canvas);
 
         canvas.clipPath(mClippingPath, Region.Op.INTERSECT);
-        canvas.drawColor(mBackgroundColor);
+        int backgroundColor = 0xFFEEEEEE;
+        canvas.drawColor(backgroundColor);
         mPaint.setColor(mForegroundColor);
 
         for (int i = 0; i < 15; ++i) {

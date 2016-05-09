@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import edu.umkc.cs449.knight.cameron.jaw.model.Message;
 import edu.umkc.cs449.knight.cameron.jaw.model.Peer;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
     private RecyclerView mMessageRecyclerView;
     private MessageAdapter mMessageAdapter;
-    private ImageButton mSendButton;
     private EditText mMessageEditText;
     private Session mSession;
 
@@ -35,19 +36,25 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mMessageEditText = (EditText) findViewById(R.id.activity_main_message_edit_text);
-        mSendButton = (ImageButton) findViewById(R.id.button_send);
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text = mMessageEditText.getText().toString();
-                if (text.length() > 0) {
-                    mSession.sendText(text);
-                    mMessageEditText.setText(null);
+        ImageButton sendButton = (ImageButton) findViewById(R.id.button_send);
+        final Context context = this;
+        if (sendButton != null) {
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String text = mMessageEditText.getText().toString();
+                    if (text.length() > 0) {
+                        try {
+                            mSession.sendText(text);
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Cannot send message.",Toast.LENGTH_LONG).show();
+                        }
+                        mMessageEditText.setText(null);
+                    }
                 }
-            }
-        });
+            });
+        }
         mMessageRecyclerView = (RecyclerView) findViewById(R.id.message_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 //        layoutManager.setReverseLayout(true);
@@ -56,22 +63,25 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
 
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         String peerName = sharedPref.getString(PEER_NAME, null);
-        if (false && peerName != null) {
+        if (peerName != null) {
+            Log.d(TAG, "Creating session with saved peer name");
             createSession(peerName);
         } else {
             showProfile();
         }
     }
 
-    private void scrollToHead() {
-        mMessageRecyclerView.smoothScrollToPosition(mMessageAdapter.getItemCount() - 1);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSession.disconnect();
     }
 
     private void createSession(String peerName) {
         mMessageAdapter = new MessageAdapter();
         mSession = new Session(new Peer(peerName), new Session.SessionListener() {
             @Override
-            public void onMessagesUpdated(Message lastMessage) {
+            public void onMessagesUpdated() {
                 mMessageAdapter.notifyDataSetChanged();
                 scrollToHead();
             }
@@ -89,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
             dialog.setArguments(args);
         }
         dialog.show(manager, PROFILE);
+    }
+
+    private void scrollToHead() {
+        mMessageRecyclerView.smoothScrollToPosition(mMessageAdapter.getItemCount() - 1);
     }
 
     @Override
@@ -121,7 +135,12 @@ public class MainActivity extends AppCompatActivity implements ProfileFragment.P
         if (name != null) {
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
             sharedPref.edit().putString(PEER_NAME, name).apply();
-            createSession(name);
+            if (mSession != null) {
+                mSession.setCurrentPeer(new Peer(name));
+            }
+            else {
+                createSession(name);
+            }
         }
     }
 

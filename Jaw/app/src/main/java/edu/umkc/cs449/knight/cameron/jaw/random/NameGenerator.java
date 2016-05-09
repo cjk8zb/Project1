@@ -1,4 +1,4 @@
-package edu.umkc.cs449.knight.cameron.jaw.model;
+package edu.umkc.cs449.knight.cameron.jaw.random;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import java.util.Random;
  */
 
 // Source: http://www.java-gaming.org/index.php?topic=35802.0
-// FIXME: Remove after networking is implemented
+@SuppressWarnings("ALL")
 public class NameGenerator {
     private static String[] Beginning = {"Kr", "Ca", "Ra", "Mrok", "Cru",
             "Ray", "Bre", "Zed", "Drak", "Mor", "Jag", "Mer", "Jar", "Mjol",

@@ -18,7 +18,7 @@ import edu.umkc.cs449.knight.cameron.jaw.view.IdenticonView;
 public abstract class MessageHolder extends RecyclerView.ViewHolder {
 
 
-    public MessageHolder(View itemView) {
+    MessageHolder(View itemView) {
         super(itemView);
     }
 
@@ -46,7 +46,7 @@ public abstract class MessageHolder extends RecyclerView.ViewHolder {
     public abstract void bindMessage(Message message);
 
     private static class SentMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
+        private final TextView mMessageTextView;
 
         public SentMessageHolder(View itemView) {
             super(itemView);
@@ -62,9 +62,9 @@ public abstract class MessageHolder extends RecyclerView.ViewHolder {
     }
 
     private static class ReceivedMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
-        private TextView mPeerTextView;
-        private IdenticonView mIdenticonView;
+        private final TextView mMessageTextView;
+        private final TextView mPeerTextView;
+        private final IdenticonView mIdenticonView;
 
         public ReceivedMessageHolder(View itemView) {
             super(itemView);
@@ -82,7 +82,7 @@ public abstract class MessageHolder extends RecyclerView.ViewHolder {
     }
 
     private static class SystemMessageHolder extends MessageHolder {
-        private TextView mMessageTextView;
+        private final TextView mMessageTextView;
 
         public SystemMessageHolder(View itemView) {
             super(itemView);
@@ -93,8 +93,6 @@ public abstract class MessageHolder extends RecyclerView.ViewHolder {
         public void bindMessage(Message message) {
             mMessageTextView.setText(message.getText());
         }
-
-
     }
 
 }

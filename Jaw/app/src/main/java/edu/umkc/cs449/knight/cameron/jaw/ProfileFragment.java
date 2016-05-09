@@ -4,11 +4,11 @@ package edu.umkc.cs449.knight.cameron.jaw;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
@@ -22,8 +22,9 @@ public class ProfileFragment extends DialogFragment {
     private EditText mNameEditText;
     private IdenticonView mIdenticonView;
 
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_profile, null);
+        View view = View.inflate(getActivity(), R.layout.dialog_profile, null);
         mIdenticonView = (IdenticonView) view.findViewById(R.id.identiconView);
         mNameEditText = (EditText) view.findViewById(R.id.dialog_profile_name_edit_text);
         mNameEditText.addTextChangedListener(new TextWatcher() {

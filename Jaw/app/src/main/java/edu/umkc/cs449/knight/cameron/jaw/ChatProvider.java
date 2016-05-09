@@ -7,7 +7,7 @@ import edu.umkc.cs449.knight.cameron.jaw.model.Peer;
  */
 public abstract class ChatProvider {
 
-    public ChatProvider(ChatListener chatListener) {
+    protected ChatProvider(ChatListener chatListener) {
         mChatListener = chatListener;
     }
 
@@ -23,7 +23,7 @@ public abstract class ChatProvider {
 
     public abstract void connect(Peer peer);
     public abstract void disconnect();
-    public abstract void sendText(String text);
-
+    // throws an Exception when there is not an established connection
+    public abstract void sendText(String text) throws Exception;
 
 }

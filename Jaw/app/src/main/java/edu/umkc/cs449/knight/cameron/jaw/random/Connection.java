@@ -1,4 +1,4 @@
-package edu.umkc.cs449.knight.cameron.jaw;
+package edu.umkc.cs449.knight.cameron.jaw.random;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -7,20 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import edu.umkc.cs449.knight.cameron.jaw.model.NameGenerator;
-import edu.umkc.cs449.knight.cameron.jaw.model.NonsenseGenerator;
+import edu.umkc.cs449.knight.cameron.jaw.ChatProvider;
+import edu.umkc.cs449.knight.cameron.jaw.random.NameGenerator;
+import edu.umkc.cs449.knight.cameron.jaw.random.NonsenseGenerator;
 import edu.umkc.cs449.knight.cameron.jaw.model.Peer;
 
 /**
  * Created by camjknight on 3/20/16.
  */
-public class RandomChat extends ChatProvider {
+public class Connection extends ChatProvider {
     private Handler mHandler = null;
-    private Random mRandom = new Random();
+    private final Random mRandom = new Random();
     private boolean mConnected;
-    private List<Peer> mFakePeers = new ArrayList<>();
+    private final List<Peer> mFakePeers = new ArrayList<>();
 
-    public RandomChat(ChatListener chatListener) {
+    public Connection(ChatListener chatListener) {
         super(chatListener);
     }
 
@@ -42,7 +43,7 @@ public class RandomChat extends ChatProvider {
     }
 
     @Override
-    public void sendText(String text) {
+    public void sendText(String text) throws Exception {
         // no-op, fake peers don't care what you have to say.
     }
 

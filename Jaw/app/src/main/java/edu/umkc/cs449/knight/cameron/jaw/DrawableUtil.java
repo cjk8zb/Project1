@@ -10,15 +10,15 @@ import android.util.TypedValue;
 /**
  * Created by camjknight on 3/6/16.
  */
-public class DrawableUtil {
+class DrawableUtil {
 
-    public static void applyTint(Context context, Drawable drawable, @AttrRes int resid) {
+    public static void applyTint(Context context, Drawable drawable, @AttrRes int resId) {
         if (context == null || drawable == null) {
             return;
         }
 
         final TypedValue typedValue = new TypedValue();
-        if (!context.getTheme().resolveAttribute(resid, typedValue, true)) {
+        if (!context.getTheme().resolveAttribute(resId, typedValue, true)) {
             return;
         }
         Integer textColorId = typedValue.resourceId;

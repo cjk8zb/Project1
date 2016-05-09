@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
 
-    <RelativeLayout
+    <edu.umkc.cs449.knight.cameron.jaw.view.IdenticonView
+        android:id="@+id/identiconView"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp" />
+
+    <EditText
+        android:id="@+id/dialog_profile_name_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/identiconView"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-
-        <edu.umkc.cs449.knight.cameron.jaw.view.IdenticonView
-            android:id="@+id/identiconView"
-            android:layout_width="144dp"
-            android:layout_height="144dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="8dp" />
-
-        <EditText
-            android:id="@+id/dialog_profile_name_edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/identiconView"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="8dp"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName" />
-    </RelativeLayout>
+        android:layout_margin="8dp"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="textPersonName" />
 </RelativeLayout>

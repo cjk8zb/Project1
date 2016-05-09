@@ -1,13 +1,18 @@
 package edu.umkc.cs449.knight.cameron.jaw.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
 
 /**
  * Created by camjknight on 2/20/16.
  */
 public class Peer {
-    private String mName;
-    private UUID mUUID;
+    @SerializedName("name")
+    private final String mName;
+
+    @SerializedName("uuid")
+    private final UUID mUUID;
 
     public Peer(String name) {
         mName = name;
@@ -18,7 +23,22 @@ public class Peer {
         return mName;
     }
 
-    public UUID getUUID() {
+    private UUID getUUID() {
         return mUUID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Peer other;
+
+        if (o instanceof Peer) {
+            other = (Peer) o;
+        }
+        else {
+            return false;
+        }
+
+        return this.getUUID().equals(other.getUUID())
+                && this.getName().equals(other.getName());
     }
 }
